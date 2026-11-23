@@ -15,13 +15,21 @@ The background map draws every station and lights up your guesses. Progress is s
 
 ## Run
 
+With Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+Open http://127.0.0.1:5000. Stop the app with **Ctrl+C**.
+
+Or run locally:
+
 ```bash
 python -m venv .venv
 .venv/bin/pip install -r requirements.txt
 .venv/bin/flask --app app run
 ```
-
-Open http://127.0.0.1:5000.
 
 ## Tests
 
