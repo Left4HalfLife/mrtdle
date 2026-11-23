@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MRTdle – guess the daily Singapore MRT station</title>
+  <meta name="description" content="A daily guessing game: find the mystery Singapore MRT station.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <svg id="map" aria-hidden="true"></svg>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+      <h1>MRT<span>dle</span></h1>
+    </div>
+    <div class="topbar-meta">
+      <span id="game-label">Loading…</span>
+      <button id="help-btn" class="icon-btn" type="button" aria-label="How to play">?</button>
+    </div>
+  </header>
+
+  <main class="panel">
+    <p class="tagline">Guess today's mystery MRT station.</p>
+
+    <form id="guess-form" class="guess-form" autocomplete="off">
+      <div class="combo">
+        <input id="guess-input" type="text" placeholder="Type a station name or code…"
+               role="combobox" aria-autocomplete="list" aria-expanded="false"
+               aria-controls="suggestions" spellcheck="false" disabled>
+        <ul id="suggestions" role="listbox" hidden></ul>
+      </div>
+      <button id="guess-btn" class="btn btn-primary" type="submit" disabled>Guess</button>
+    </form>
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+
+    <div class="board" role="table" aria-label="Your guesses">
+      <div class="row head" role="row">
+        <div role="columnheader">Station</div>
+        <div role="columnheader">Line</div>
+        <div role="columnheader">Structure</div>
+        <div role="columnheader">Distance</div>
+        <div role="columnheader">Stops away</div>
+      </div>
+      <div id="rows"></div>
+    </div>
+
+    <section id="result" class="result" hidden>
+      <h2 id="result-title"></h2>
+      <p id="result-text"></p>
+      <div class="result-actions">
+        <button id="share-btn" class="btn btn-primary" type="button">Share result</button>
+      </div>
+      <p class="countdown">Next station in <strong id="countdown">--:--:--</strong></p>
+    </section>
+
+    <div class="footer-actions">
+      <button id="giveup-btn" class="btn btn-ghost" type="button" hidden>Give up</button>
+    </div>
+  </main>
+
+  <footer class="credits">
+    <p>Fan-made game, not affiliated with SMRT, SBS Transit or LTA.</p>
+    <p id="attribution"></p>
+  </footer>
+
+  <dialog id="help">
+    <h2>How to play</h2>
+    <p>Each day there is one mystery MRT station. Type a station, pick it from the list and press <kbd>Enter</kbd>. Each guess adds a row of hints:</p>
+    <ul>
+      <li><b>Line</b> – the guessed station's line(s).</li>
+      <li><b>Structure</b> – underground, above ground, or both (interchanges).</li>
+      <li><b>Distance</b> – straight-line km to the mystery station, with an arrow pointing towards it.</li>
+      <li><b>Stops away</b> – fewest stations to travel to reach it, switching lines allowed.</li>
+    </ul>
+    <div class="legend">
+      <span class="cell correct">Exact</span>
+      <span class="cell partial">Partial / close</span>
+      <span class="cell wrong">No match</span>
+    </div>
+    <p class="small">Distance is orange within {{ close_km|int }} km; stops are orange within {{ close_stops }} stations.</p>
+    <form method="dialog"><button class="btn btn-primary">Let's go</button></form>
+  </dialog>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
